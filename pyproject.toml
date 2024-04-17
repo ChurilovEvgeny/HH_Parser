@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "4 course"
+version = "0.1.0"
+description = ""
+authors = ["Churilov Evgeny <i@churilovevgeny.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+requests = "^2.31.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+pytest-cov = "^5.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
