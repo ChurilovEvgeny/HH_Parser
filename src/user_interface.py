@@ -1,24 +1,39 @@
 class UserInterface():
     def __init__(self):
-        self.vacations_count: int = 1
-        self.filter_words: str = ""
-        self.salary: int = 0
+        self.__vacations_count: int = 1
+        self.__filter_words: list[str] = []
+        self.__salary: int = 0
+
+    @property
+    def vacations_count(self):
+        return self.__vacations_count
+
+    @property
+    def filter_words(self):
+        # Возвращаем копию списка, чтобы нельзя было модифицировать приватное поле из вне
+        return self.__filter_words[:]
+
+    @property
+    def salary(self):
+        return self.__salary
 
     def run_user_interface(self):
         self.__greetings()
-        self.__get_search_key_words()
-        self.__get_salary()
-        self.__get_number_of_vacations()
-        # Поиск и вывод
+        while True:
+            self.__get_search_key_words()
+            self.__get_salary()
+            self.__get_number_of_vacations()
+            # Поиск и вывод
 
-        if not self.__is_create_new_search_request():
-            self.__farewell()
+            if not self.__is_create_new_search_request():
+                self.__farewell()
+                break
 
     def __greetings(self):
         print("Добро пожаловать в программу поиска вакансий в HH.ru")
 
     def __get_search_key_words(self):
-        self.filter_words = input("Введите ключевые слова для фильтрации вакансий (разделенные пробелом): ").split()
+        self.__filter_words = input("Введите ключевые слова для фильтрации вакансий (разделенные пробелом): ").split()
 
     def __get_salary(self):
         while True:
@@ -26,7 +41,7 @@ class UserInterface():
             if salary.isdigit():
                 salary = int(salary)
                 if salary >= 0:
-                    self.salary = salary
+                    self.__salary = salary
                     break
 
     def __get_number_of_vacations(self):
@@ -35,12 +50,12 @@ class UserInterface():
             if vac_count.isdigit():
                 vac_count = int(vac_count)
                 if vac_count > 0:
-                    self.vacations_count = vac_count
+                    self.__vacations_count = vac_count
                     break
 
     def __is_create_new_search_request(self):
         while True:
-            user_answer = input("Хотите сформировать новый запрос?: [д/н]").lower()
+            user_answer = input("Хотите сформировать новый запрос? [д/н]: ").lower()
             if user_answer == "д":
                 return True
             elif user_answer == "н":
