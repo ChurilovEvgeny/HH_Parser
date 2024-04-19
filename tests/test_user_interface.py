@@ -2,6 +2,7 @@ import builtins
 
 from src.user_interface import UserInterface
 
+
 def test_user_interface_test_1(monkeypatch, capsys):
     # Список всей последовательности ввода в консоль
     inputs = iter(["Python", "100", "15", "н"])
@@ -13,6 +14,7 @@ def test_user_interface_test_1(monkeypatch, capsys):
     assert ui.filter_words == ["Python"]
     assert ui.salary == 100
     assert ui.vacations_count == 15
+
 
 def test_user_interface_test_2(monkeypatch, capsys):
     # Список всей последовательности ввода в консоль
@@ -26,4 +28,3 @@ def test_user_interface_test_2(monkeypatch, capsys):
     assert ui.filter_words == ["Java"]
     assert ui.salary == 100
     assert ui.vacations_count == 15
-
