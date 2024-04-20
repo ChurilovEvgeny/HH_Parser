@@ -1,3 +1,5 @@
+from pydantic import PositiveInt
+
 from src.user_interface import UserInterface
 
 # import requests

@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Python",
+    "url": "https://hh.ru/",
+    "salary": 50000,
+    "region": "СПБ",
+    "description": "Текст описания"
+  },
+  {
+    "name": "Java",
+    "url": "https://hh.ru/",
+    "salary": 50000,
+    "region": "СПБ",
+    "description": "Текст описания"
+  },
+  {
+    "name": "C++",
+    "url": "https://hh.ru/",
+    "salary": 50000,
+    "region": "СПБ",
+    "description": "Текст описания"
+  }
+]

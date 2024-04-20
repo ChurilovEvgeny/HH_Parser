@@ -1,6 +1,6 @@
 from typing import Self
 
-from pydantic import BaseModel, AnyHttpUrl, NonNegativeInt
+from pydantic import BaseModel, RootModel, AnyHttpUrl, NonNegativeInt
 
 
 class Vacancy(BaseModel):
@@ -34,3 +34,13 @@ class Vacancy(BaseModel):
     def __vacancy_type_validate(instance):
         if not isinstance(instance, Vacancy):
             raise TypeError("Сравнивать можно только с типом Vacancy")
+
+
+class VacanciesList(RootModel):
+    root: list[Vacancy] = None
+
+    def append(self, vacancy: Vacancy):
+        if self.root is None:
+            self.root = []
+
+        self.root.append(vacancy)

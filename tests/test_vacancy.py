@@ -1,51 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from src.vacancy import Vacancy
-
-
-@pytest.fixture
-def get_valid_vacancy():
-    return {
-        'name': 'Имя',
-        'url': 'https://hh.ru',
-        'salary': 50000,
-        'region': 'СПБ',
-        'description': 'Текст описания',
-    }
-
-
-@pytest.fixture
-def get_url_failed_vacancy():
-    return {
-        'name': 'Имя',
-        'url': 'NONE',
-        'salary': 0,
-        'region': 'СПБ',
-        'description': 'Текст описания',
-    }
-
-
-@pytest.fixture
-def get_salary_failed_1_vacancy():
-    return {
-        'name': 'Имя',
-        'url': 'https://hh.ru',
-        'salary': "fgd",
-        'region': 'СПБ',
-        'description': 'Текст описания',
-    }
-
-
-@pytest.fixture()
-def get_salary_failed_2_vacancy():
-    return {
-        'name': 'Имя',
-        'url': 'https://hh.ru',
-        'salary': -100,
-        'region': 'СПБ',
-        'description': 'Текст описания',
-    }
+from src.vacancy import Vacancy, VacanciesList
 
 
 def test_single_vacancy(get_valid_vacancy, capsys):
@@ -88,3 +44,10 @@ def test_comparison(get_valid_vacancy):
 
     with pytest.raises(TypeError):
         vac1 > 1000
+
+
+def test_list_of_vavancies(get_valid_vacancy):
+    vac1 = Vacancy(**get_valid_vacancy)
+    vac2 = Vacancy(**get_valid_vacancy)
+    vac_lst = VacanciesList(root=[vac1, vac2])
+    assert len(vac_lst.root) == 2
