@@ -4,12 +4,21 @@ from pydantic import BaseModel, RootModel, AnyHttpUrl, PositiveInt
 
 
 class Vacancy(BaseModel):
-    id : PositiveInt
+    """
+    Класс контейнер Вакансии. Требуемые ИМЕНОВАННЫЕ параметры:\n
+    - id: PositiveInt
+    - name: str
+    - alternate_url: AnyHttpUrl
+    - salary: dict | None = {}
+    - area: dict | None = {}
+    - schedule: dict | None = {}
+    """
+    id: PositiveInt
     name: str
     alternate_url: AnyHttpUrl
     salary: dict | None = {}
-    area: dict = {}
-    schedule: dict = {}
+    area: dict | None = {}
+    schedule: dict | None = {}
 
     def __str__(self):
         return (f"{30 * '*'}\n"
@@ -24,10 +33,10 @@ class Vacancy(BaseModel):
         if not self.salary:
             return "Не указана"
         else:
-            from_str = f"от {self.salary['from']} {self.salary['currency'].upper()} " if self.salary['from'] else ""
-            to_str = f"до {self.salary['to']} {self.salary['currency'].upper()} " if self.salary['to'] else ""
+            from_str = f"от {self.salary['from']} {self.salary['currency']} " if self.salary['from'] else ""
+            to_str = f"до {self.salary['to']} {self.salary['currency']} " if self.salary['to'] else ""
             gross = "до вычета налогов" if self.salary['to'] else "на руки"
-            return (from_str + to_str  + gross).strip().capitalize()
+            return (from_str + to_str + gross).strip().capitalize()
 
     def __area_str(self):
         if not self.area:
@@ -46,29 +55,29 @@ class Vacancy(BaseModel):
         if self.salary and other.salary:
             # Если оба объекты, то сравниваем from и to
             # Вычет налога игнорируем
-            if self.salary.get("from", 0) == other.salary.get("from", 0):
-                return self.salary.get("to", 0) > other.salary.get("to", 0)
+            if int(self.salary.get("from", 0) or 0) == int(other.salary.get("from", 0) or 0):
+                return int(self.salary.get("to", 0) or 0) > int(other.salary.get("to", 0) or 0)
             else:
-                return self.salary.get("from", 0) > other.salary.get("from", 0)
+                return int(self.salary.get("from", 0) or 0) > int(other.salary.get("from", 0) or 0)
         else:
             return self.salary is not None
 
-    # def __ge__(self, other: Self):
-    #     self.__vacancy_type_validate(other)
-    #     return self.salary >= other.salary
+    def __ge__(self, other: Self):
+        self.__vacancy_type_validate(other)
+        return self > other or self == other
 
     def __eq__(self, other: Self):
         self.__vacancy_type_validate(other)
         if self.salary and other.salary:
-        # Если оба объекты, то сравниваем from и to
-        # Вычет налога игнорируем
-            if self.salary.get("from", 0) == other.salary.get("from", 0):
-                return self.salary.get("to", 0) == other.salary.get("to", 0)
+            # Если оба объекты, то сравниваем from и to
+            # Вычет налога игнорируем
+            if int(self.salary.get("from", 0) or 0) == int(other.salary.get("from", 0) or 0):
+                return int(self.salary.get("to", 0) or 0) == int(other.salary.get("to", 0) or 0)
             else:
                 return False
         else:
-        # Если оба None значит равны
-        # Если что-то None, а что-то объект, значит не равны
+            # Если оба None значит равны
+            # Если что-то None, а что-то объект, значит не равны
             return self.salary == other.salary
 
     @staticmethod
@@ -78,6 +87,10 @@ class Vacancy(BaseModel):
 
 
 class VacanciesList(RootModel):
+    """
+    Класс контейнер списка вакансий. Требуемые параметры:\n
+    - list[Vacancy] = None
+    """
     root: list[Vacancy] = None
 
     def append(self, vacancy: Vacancy):
