@@ -110,6 +110,8 @@ def test_list_of_vacancies(get_valid_vacancy):
 
     vac2_lst = VacanciesList()
     assert vac2_lst.root is None
+    assert str(vac2_lst) == 'Нет данных!'
+
     vac2_lst.append(vac1)
     assert len(vac2_lst.root) == 1
     assert str(

@@ -31,7 +31,7 @@ class HH(Parser):
                 per_page = 100
                 number_of_vacation -= 100
             self.__params['per_page'] = per_page
-            self.__params['currency'] = "rur" # так же сразу указываем перевод в рубли
+            self.__params['currency'] = "RUR" # так же сразу указываем перевод в рубли
 
             # Если указываем зарплату, то дополнительно указываем на вывод вакансий ТОЛЬКО с зарплатами
             if salary:

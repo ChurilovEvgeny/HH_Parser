@@ -100,4 +100,4 @@ class VacanciesList(RootModel):
         self.root.append(vacancy)
 
     def __str__(self):
-        return "\n".join(map(str, self.root))
+        return "Нет данных!" if self.root is None else "\n".join(map(str, self.root))
