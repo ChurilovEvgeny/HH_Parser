@@ -1,8 +1,13 @@
+from src.parser import Parser
+
+
 class UserInterface():
-    def __init__(self):
+    def __init__(self, parser: Parser):
         self.__vacations_count: int = 1
         self.__filter_words: list[str] = []
         self.__salary: int = 0
+
+        self.parser: Parser = parser
 
     @property
     def vacations_count(self):
@@ -24,6 +29,8 @@ class UserInterface():
             self.__get_salary()
             self.__get_number_of_vacations()
             # Поиск и вывод
+            self.parser.load_vacancies(self.filter_words, self.salary, self.vacations_count)
+            print(self.parser.vacancies)
 
             if not self.__is_create_new_search_request():
                 self.__farewell()
@@ -37,7 +44,7 @@ class UserInterface():
 
     def __get_salary(self):
         while True:
-            salary = input("Введите зарплату: (целые положительные числа; 0, если неважно)")
+            salary = input("Введите зарплату: (целые положительные числа; 0, если неважно) ")
             if salary.isdigit():
                 salary = int(salary)
                 if salary >= 0:
