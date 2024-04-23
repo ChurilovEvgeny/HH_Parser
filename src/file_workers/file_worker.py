@@ -16,6 +16,10 @@ class FileWorker(ABC):
         pass
 
     @abstractmethod
+    def append_vacancies(self, vacancies: VacanciesList):
+        pass
+
+    @abstractmethod
     def add_vacancy(self, vacancy: Vacancy):
         pass
 

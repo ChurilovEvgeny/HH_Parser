@@ -99,5 +99,13 @@ class VacanciesList(RootModel):
 
         self.root.append(vacancy)
 
+    def remove_vacancy_by_id(self, vacancy_id: int):
+        if self.root:
+            for v in self.root:
+                if v.id == vacancy_id:
+                    self.root.remove(v)
+                    # нет выхода из цикла, так как в списке могут быть копии
+
     def __str__(self):
         return "Нет данных!" if self.root is None else "\n".join(map(str, self.root))
+

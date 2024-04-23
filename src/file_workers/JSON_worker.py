@@ -21,6 +21,10 @@ class JSONWorker(FileWorker):
         json_str = vacancies.model_dump_json(indent=2)
         self._append_str_in_file(json_str)
 
+    def append_vacancies(self, vacancies: VacanciesList):
+        vacancies_from_file = self.load_all_from_file()
+        [vacancies_from_file.append(v) for v in vacancies.root]
+
     def add_vacancy(self, vacancy: Vacancy):
         vacancies = self.load_all_from_file()
         vacancies.append(vacancy)

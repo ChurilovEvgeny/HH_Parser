@@ -116,3 +116,18 @@ def test_list_of_vacancies(get_valid_vacancy):
     assert len(vac2_lst.root) == 1
     assert str(
         vac2_lst) == '******************************\nid: 111\nВакансия: Имя\nURL: https://hh.ru/\nЗарплата: Не указана\nРегион: СПБ\nГрафик: Полная занятость\n'
+
+
+def test_remove_vacancy_by_id(get_valid_vacancy):
+    vac1 = Vacancy(**get_valid_vacancy)
+    vac1.id = 1
+    vac2 = Vacancy(**get_valid_vacancy)
+    vac2.id = 2
+    vac_lst = VacanciesList(root=[vac1, vac2, vac1])
+    assert len(vac_lst.root) == 3
+
+    vac_lst.remove_vacancy_by_id(1)
+    assert len(vac_lst.root) == 1
+
+    vac_lst.remove_vacancy_by_id(10)
+    assert len(vac_lst.root) == 1
