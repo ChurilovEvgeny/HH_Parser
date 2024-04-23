@@ -12,11 +12,19 @@ class FileWorker(ABC):
             self._filename = custom_filename
 
     @abstractmethod
-    def save_vacancies(self, vacancies: VacanciesList):
+    def load_all_from_file(self) -> VacanciesList:
         pass
 
     @abstractmethod
-    def append_vacancies(self, vacancies: VacanciesList):
+    def load_filtered_from_file(self, keywords: list[str]) -> VacanciesList:
+        pass
+
+    @abstractmethod
+    def save_vacancies(self, vacancies: VacanciesList, vacancies_id: list[int] | None = None):
+        pass
+
+    @abstractmethod
+    def append_vacancies(self, vacancies: VacanciesList, vacancies_id: list[int] | None = None):
         pass
 
     @abstractmethod
@@ -28,13 +36,13 @@ class FileWorker(ABC):
         pass
 
     @abstractmethod
-    def remove_vacancy_by_id(self, vacancy_id: int):
+    def remove_vacancies_by_ids(self, vacancies_id: list[int]):
         pass
 
     def remove_file(self):
         if os.path.exists(self._filename):
             os.remove(self._filename)
 
-    def _append_str_in_file(self, json_str):
+    def _write_str_in_file(self, json_str):
         with open(self._filename, "w", encoding="utf-8") as f:
             f.write(json_str)

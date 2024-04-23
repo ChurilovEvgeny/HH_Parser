@@ -1,7 +1,7 @@
 from enum import Enum
 
-from src.parser import Parser
 from src.file_workers.file_worker import FileWorker
+from src.parser import Parser
 
 
 class UIFunction(Enum):
@@ -9,16 +9,22 @@ class UIFunction(Enum):
     WORK_WITH_FILE = 1
     WORD_WITH_HH = 2
 
+class FileFunction(Enum):
+    EXIT = 0
+    OPEN_ALL = 1
+    OPEN_FILTERED = 2
+    REMOVE_BY_ID = 3
 
 class HHFunction(Enum):
     EXIT = 0
     NEW_SEARCH = 1
     SAVE_ALL = 2
-    APPEND_ALL = 3
-    SAVE_BY_ID = 4
+    SAVE_BY_ID = 3
+    APPEND_ALL = 4
     APPEND_BY_ID = 5
 
-class UserInterface():
+
+class UserInterface:
     def __init__(self, parser: Parser, file_worker: FileWorker):
         self.__vacations_count: int = 1
         self.__filter_words: list[str] = []
@@ -43,39 +49,76 @@ class UserInterface():
     def run_user_interface(self):
 
         def file_interface():
-            pass
+            def get_vacancies_ids():
+                while True:
+                    ids_list = input(
+                        "Введите сохраняемые id (разделенные пробелом): ").split()
+                    if ids_list and all(c.isdigit() for c in ids_list):
+                        return [int(c) for c in ids_list]
+
+            while True:
+                func = self.__select_function_file()
+                match func:
+                    case FileFunction.EXIT:
+                        return
+
+                    case FileFunction.OPEN_ALL:
+                        print(self.file_worker.load_all_from_file())
+
+                    case FileFunction.OPEN_FILTERED:
+                        self.__get_search_key_words()
+                        print(self.file_worker.load_filtered_from_file(self.__filter_words))
+
+                    case FileFunction.REMOVE_BY_ID:
+                        vac_ids = get_vacancies_ids()
+                        self.file_worker.remove_vacancies_by_ids(vac_ids)
+                        self.__saved()
 
         def hh_interface():
-            self.__get_search_key_words()
-            self.__get_salary()
-            self.__get_number_of_vacations()
-            # Поиск и вывод
-            self.parser.load_vacancies(self.filter_words, self.salary, self.vacations_count)
-            print(self.parser.vacancies)
+            def get_vacancies_ids():
+                while True:
+                    ids_list = input(
+                        "Введите сохраняемые id (разделенные пробелом): ").split()
+                    if ids_list and all(c.isdigit() for c in ids_list):
+                        return [int(c) for c in ids_list]
 
-            func = self.__select_function_2()
-            match func:
-                case HHFunction.EXIT:
-                    return
+            while True:
+                self.__get_search_key_words()
+                self.__get_salary()
+                self.__get_number_of_vacations()
+                # Поиск и вывод
+                self.parser.load_vacancies(self.filter_words, self.salary, self.vacations_count)
+                print(self.parser.vacancies)
 
-                case HHFunction.NEW_SEARCH:
-                    pass
+                func = self.__select_function_hh()
+                match func:
+                    case HHFunction.EXIT:
+                        return
 
-                case HHFunction.SAVE_ALL:
-                    self.file_worker.save_vacancies(self.parser.vacancies)
+                    case HHFunction.NEW_SEARCH:
+                        pass
 
-                case HHFunction.SAVE_BY_ID:
-                    pass
+                    case HHFunction.SAVE_ALL:
+                        self.file_worker.save_vacancies(self.parser.vacancies)
+                        self.__saved()
 
-                case HHFunction.APPEND_ALL:
-                    self.file_worker.append_vacancies(self.parser.vacancies)
+                    case HHFunction.SAVE_BY_ID:
+                        vac_ids = get_vacancies_ids()
+                        self.file_worker.save_vacancies(self.parser.vacancies, vac_ids)
+                        self.__saved()
 
-                case HHFunction.APPEND_BY_ID:
-                    pass
+                    case HHFunction.APPEND_ALL:
+                        self.file_worker.append_vacancies(self.parser.vacancies)
+                        self.__saved()
+
+                    case HHFunction.APPEND_BY_ID:
+                        vac_ids = get_vacancies_ids()
+                        self.file_worker.append_vacancies(self.parser.vacancies, vac_ids)
+                        self.__saved()
 
         self.__greetings()
         while True:
-            func = self.__select_function()
+            func = self.__select_function_main()
             match func:
                 case UIFunction.EXIT:
                     self.__farewell()
@@ -94,7 +137,10 @@ class UserInterface():
     def __greetings(self):
         print("Добро пожаловать в программу поиска вакансий в HH.ru")
 
-    def __select_function(self) -> UIFunction:
+    def __saved(self):
+        print("Сохранено...")
+
+    def __select_function_main(self) -> UIFunction:
         while True:
             print("Выберете функцию:")
             print("1 - Работа с файлами;")
@@ -107,18 +153,34 @@ class UserInterface():
                 if 0 <= ui < 3:
                     return UIFunction(ui)
 
-    def __select_function_2(self) -> HHFunction:
+    def __select_function_file(self) -> FileFunction:
         while True:
             print("Выберете функцию:")
-            print("1 - Новый поиск;")
-            print("2 - Сохранить в файл всё;")
-            print("3 - Сохранить в файл выбранные id;")
+            print("1 - Открыть файл целиком;")
+            print("2 - Открыть отфильтрованный файл;")
+            print("3 - Удалить выбранные id;")
             print("0 - Выход;")
 
             ui = input("Номер функции: ")
             if ui.isdigit():
                 ui = int(ui)
                 if 0 <= ui < 4:
+                    return FileFunction(ui)
+
+    def __select_function_hh(self) -> HHFunction:
+        while True:
+            print("Выберете функцию:")
+            print("1 - Новый поиск;")
+            print("2 - Сохранить в файл всё;")
+            print("3 - Сохранить выбранные id;")
+            print("4 - Добавить в файл всё;")
+            print("5 - Добавить выбранные id;")
+            print("0 - Выход;")
+
+            ui = input("Номер функции: ")
+            if ui.isdigit():
+                ui = int(ui)
+                if 0 <= ui < 6:
                     return HHFunction(ui)
 
     def __get_search_key_words(self):

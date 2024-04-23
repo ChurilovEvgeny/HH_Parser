@@ -1,5 +1,3 @@
-import json
-
 from src.file_workers.file_worker import FileWorker
 from src.vacancy import Vacancy, VacanciesList
 
@@ -17,13 +15,21 @@ class JSONWorker(FileWorker):
             vac = VacanciesList()
         return vac
 
-    def save_vacancies(self, vacancies: VacanciesList):
-        json_str = vacancies.model_dump_json(indent=2)
-        self._append_str_in_file(json_str)
+    def load_filtered_from_file(self, keywords: list[str]) -> VacanciesList:
+        vacancies = self.load_all_from_file()
+        vacancies.filter_vacancies_by_keyword(keywords)
+        return vacancies
 
-    def append_vacancies(self, vacancies: VacanciesList):
+    def save_vacancies(self, vacancies: VacanciesList, vacancies_id: list[int] | None = None):
+        vacancies.filter_vacancies_by_ids(vacancies_id)
+        json_str = vacancies.model_dump_json(indent=2)
+        self._write_str_in_file(json_str)
+
+    def append_vacancies(self, vacancies: VacanciesList, vacancies_id: list[int] | None = None):
+        vacancies.filter_vacancies_by_ids(vacancies_id)
         vacancies_from_file = self.load_all_from_file()
-        [vacancies_from_file.append(v) for v in vacancies.root]
+        [vacancies.append(v) for v in vacancies_from_file.root]
+        self.save_vacancies(vacancies)
 
     def add_vacancy(self, vacancy: Vacancy):
         vacancies = self.load_all_from_file()
@@ -42,7 +48,8 @@ class JSONWorker(FileWorker):
 
         return res_vacancies
 
-
-    def remove_vacancy_by_id(self, vacancy_id: int):
-        pass
-
+    def remove_vacancies_by_ids(self, vacancies_id: list[int]):
+        vacancies_from_file = self.load_all_from_file()
+        vacancies_from_file.remove_vacancies_by_ids(vacancies_id)
+        json_str = vacancies_from_file.model_dump_json(indent=2)
+        self._write_str_in_file(json_str)

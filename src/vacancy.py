@@ -91,7 +91,7 @@ class VacanciesList(RootModel):
     Класс контейнер списка вакансий. Требуемые параметры:\n
     - list[Vacancy] = None
     """
-    root: list[Vacancy] = None
+    root: list[Vacancy] = []
 
     def append(self, vacancy: Vacancy):
         if self.root is None:
@@ -99,13 +99,35 @@ class VacanciesList(RootModel):
 
         self.root.append(vacancy)
 
-    def remove_vacancy_by_id(self, vacancy_id: int):
-        if self.root:
+    def remove_vacancies_by_ids(self, vacancies_id: list[int]):
+        new_root: list[Vacancy] = []
+        for v in self.root:
+            if v.id not in vacancies_id:
+                new_root.append(v)
+                # нет выхода из цикла, так как в списке могут быть копии
+
+        if new_root:
+            self.root = new_root
+
+    def filter_vacancies_by_ids(self, vacancies_id: list[int] | None = None):
+        if vacancies_id:
+            new_root: list[Vacancy] = []
             for v in self.root:
-                if v.id == vacancy_id:
-                    self.root.remove(v)
+                if v.id in vacancies_id:
+                    new_root.append(v)
                     # нет выхода из цикла, так как в списке могут быть копии
 
-    def __str__(self):
-        return "Нет данных!" if self.root is None else "\n".join(map(str, self.root))
+            if new_root:
+                self.root = new_root
 
+    def filter_vacancies_by_keyword(self, keywords: list[str]):
+        new_root: list[Vacancy] = []
+        for v in self.root:
+            if any([key.lower() in v.name.lower() for key in keywords]):
+                new_root.append(v)
+
+        if new_root:
+            self.root = new_root
+
+    def __str__(self):
+        return "Нет данных!" if not self.root else "\n".join(map(str, self.root))
