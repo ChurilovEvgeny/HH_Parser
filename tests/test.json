@@ -1,23 +1,72 @@
 [
   {
-    "name": "Python",
-    "url": "https://hh.ru/",
-    "salary": 50000,
-    "region": "СПБ",
-    "description": "Текст описания"
+    "id": 96063685,
+    "name": "Стажер it специалист",
+    "alternate_url": "https://hh.ru/vacancy/96063685",
+    "salary": null,
+    "area": {
+      "id": "160",
+      "name": "Алматы",
+      "url": "https://api.hh.ru/areas/160"
+    },
+    "schedule": {
+      "id": "fullDay",
+      "name": "Полный день"
+    }
   },
   {
-    "name": "Java",
-    "url": "https://hh.ru/",
-    "salary": 50000,
-    "region": "СПБ",
-    "description": "Текст описания"
+    "id": 97607274,
+    "name": "Front-End Developer",
+    "alternate_url": "https://hh.ru/vacancy/97607274",
+    "salary": null,
+    "area": {
+      "id": "1002",
+      "name": "Минск",
+      "url": "https://api.hh.ru/areas/1002"
+    },
+    "schedule": {
+      "id": "fullDay",
+      "name": "Полный день"
+    }
   },
   {
-    "name": "C++",
-    "url": "https://hh.ru/",
-    "salary": 50000,
-    "region": "СПБ",
-    "description": "Текст описания"
+    "id": 96194079,
+    "name": "Junior Golang Developer",
+    "alternate_url": "https://hh.ru/vacancy/96194079",
+    "salary": {
+      "from": 75000,
+      "to": null,
+      "currency": "RUR",
+      "gross": false
+    },
+    "area": {
+      "id": "1550",
+      "name": "Таганрог",
+      "url": "https://api.hh.ru/areas/1550"
+    },
+    "schedule": {
+      "id": "fullDay",
+      "name": "Полный день"
+    }
+  },
+  {
+    "id": 95972427,
+    "name": "Геймер-тестировщик",
+    "alternate_url": "https://hh.ru/vacancy/95972427",
+    "salary": {
+      "from": 50000,
+      "to": 70000,
+      "currency": "RUR",
+      "gross": false
+    },
+    "area": {
+      "id": "1",
+      "name": "Москва",
+      "url": "https://api.hh.ru/areas/1"
+    },
+    "schedule": {
+      "id": "remote",
+      "name": "Удаленная работа"
+    }
   }
 ]

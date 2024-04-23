@@ -32,10 +32,6 @@ class FileWorker(ABC):
         pass
 
     @abstractmethod
-    def get_vacancies_by_keywords(self, keywords: list[str]) -> list[Vacancy]:
-        pass
-
-    @abstractmethod
     def remove_vacancies_by_ids(self, vacancies_id: list[int]):
         pass
 
