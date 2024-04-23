@@ -109,7 +109,7 @@ def test_list_of_vacancies(get_valid_vacancy):
     assert len(vac_lst.root) == 2
 
     vac2_lst = VacanciesList()
-    assert vac2_lst.root is None
+    assert vac2_lst.root == []
     assert str(vac2_lst) == 'Нет данных!'
 
     vac2_lst.append(vac1)
@@ -118,7 +118,7 @@ def test_list_of_vacancies(get_valid_vacancy):
         vac2_lst) == '******************************\nid: 111\nВакансия: Имя\nURL: https://hh.ru/\nЗарплата: Не указана\nРегион: СПБ\nГрафик: Полная занятость\n'
 
 
-def test_remove_vacancy_by_id(get_valid_vacancy):
+def test_remove_vacancies_by_ids(get_valid_vacancy):
     vac1 = Vacancy(**get_valid_vacancy)
     vac1.id = 1
     vac2 = Vacancy(**get_valid_vacancy)
@@ -126,8 +126,37 @@ def test_remove_vacancy_by_id(get_valid_vacancy):
     vac_lst = VacanciesList(root=[vac1, vac2, vac1])
     assert len(vac_lst.root) == 3
 
-    vac_lst.remove_vacancy_by_id(1)
+    vac_lst.remove_vacancies_by_ids([1])
     assert len(vac_lst.root) == 1
+    assert vac_lst.root[0].id == 2
 
-    vac_lst.remove_vacancy_by_id(10)
+    vac_lst.remove_vacancies_by_ids([10])
     assert len(vac_lst.root) == 1
+    assert vac_lst.root[0].id == 2
+
+def test_filter_vacancies_by_ids(get_valid_vacancy):
+    vac1 = Vacancy(**get_valid_vacancy)
+    vac1.id = 1
+    vac2 = Vacancy(**get_valid_vacancy)
+    vac2.id = 2
+    vac_lst = VacanciesList(root=[vac1, vac2, vac1])
+    assert len(vac_lst.root) == 3
+
+    vac_lst.filter_vacancies_by_ids([2])
+    assert len(vac_lst.root) == 1
+    assert vac_lst.root[0].id == 2
+
+def test_filter_vacancies_by_keyword(get_valid_vacancy):
+    vac1 = Vacancy(**get_valid_vacancy)
+    vac1.id = 1
+    vac1.name = "Python"
+    vac2 = Vacancy(**get_valid_vacancy)
+    vac2.id = 2
+    vac2.name = "Java"
+    vac_lst = VacanciesList(root=[vac1, vac2, vac1])
+    assert len(vac_lst.root) == 3
+
+    vac_lst.filter_vacancies_by_keyword(["Python"])
+    assert len(vac_lst.root) == 2
+    assert vac_lst.root[0].id == 1
+    assert vac_lst.root[1].id == 1

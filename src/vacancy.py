@@ -94,38 +94,41 @@ class VacanciesList(RootModel):
     root: list[Vacancy] = []
 
     def append(self, vacancy: Vacancy):
-        if self.root is None:
-            self.root = []
-
+        """
+        Добавляет объект типа Vacancy, описывающий вакансию в список вакансий
+        :param vacancy: Вакансия
+        :return: None
+        """
         self.root.append(vacancy)
 
     def remove_vacancies_by_ids(self, vacancies_id: list[int]):
-        new_root: list[Vacancy] = []
-        for v in self.root:
-            if v.id not in vacancies_id:
-                new_root.append(v)
-                # нет выхода из цикла, так как в списке могут быть копии
-
+        """
+        Удаляет вакансии с заданными id
+        :param vacancies_id: список id
+        :return: None
+        """
+        new_root = [vac for vac in self.root if vac.id not in vacancies_id]
         if new_root:
             self.root = new_root
 
     def filter_vacancies_by_ids(self, vacancies_id: list[int] | None = None):
+        """
+        Фильтрует (оставляет) вакансии с заданными id
+        :param vacancies_id: список id
+        :return: None
+        """
         if vacancies_id:
-            new_root: list[Vacancy] = []
-            for v in self.root:
-                if v.id in vacancies_id:
-                    new_root.append(v)
-                    # нет выхода из цикла, так как в списке могут быть копии
-
+            new_root = [vac for vac in self.root if vac.id in vacancies_id]
             if new_root:
                 self.root = new_root
 
     def filter_vacancies_by_keyword(self, keywords: list[str]):
-        new_root: list[Vacancy] = []
-        for v in self.root:
-            if any([key.lower() in v.name.lower() for key in keywords]):
-                new_root.append(v)
-
+        """
+        Фильтрует (оставляет) вакансии по заданными ключевым словам
+        :param keywords: список ключевых слов
+        :return: None
+        """
+        new_root = [vac for vac in self.root if any([key.lower() in vac.name.lower() for key in keywords])]
         if new_root:
             self.root = new_root
 
