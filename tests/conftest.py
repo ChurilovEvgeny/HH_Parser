@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 
@@ -12,6 +14,7 @@ def get_valid_vacancy():
         'schedule': {'name': 'Полная занятость'},
     }
 
+
 @pytest.fixture
 def get_valid_vacancy_2():
     return {
@@ -23,6 +26,7 @@ def get_valid_vacancy_2():
         'schedule': {'name': 'Полная занятость'},
     }
 
+
 @pytest.fixture
 def get_valid_vacancy_3():
     return {
@@ -33,6 +37,7 @@ def get_valid_vacancy_3():
         'area': None,
         'schedule': None,
     }
+
 
 @pytest.fixture
 def get_url_failed_vacancy():
@@ -95,3 +100,14 @@ def get_program_languages_vacancies():
             "description": "Текст описания"
         }
     ]
+
+
+@pytest.fixture
+def get_response_page_0():
+    with open("resp_page_0.json", "r", encoding="utf-8") as f:
+        return json.load(f)
+
+@pytest.fixture
+def get_response_page_1():
+    with open("resp_page_1.json", "r", encoding="utf-8") as f:
+        return json.load(f)

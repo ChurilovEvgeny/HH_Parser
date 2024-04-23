@@ -134,6 +134,7 @@ def test_remove_vacancies_by_ids(get_valid_vacancy):
     assert len(vac_lst.root) == 1
     assert vac_lst.root[0].id == 2
 
+
 def test_filter_vacancies_by_ids(get_valid_vacancy):
     vac1 = Vacancy(**get_valid_vacancy)
     vac1.id = 1
@@ -145,6 +146,7 @@ def test_filter_vacancies_by_ids(get_valid_vacancy):
     vac_lst.filter_vacancies_by_ids([2])
     assert len(vac_lst.root) == 1
     assert vac_lst.root[0].id == 2
+
 
 def test_filter_vacancies_by_keyword(get_valid_vacancy):
     vac1 = Vacancy(**get_valid_vacancy)

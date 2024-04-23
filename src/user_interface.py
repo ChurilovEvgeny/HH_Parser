@@ -1,7 +1,7 @@
 from enum import Enum
 
 from src.file_workers.file_worker import FileWorker
-from src.parser import Parser
+from src.parsers.parser import Parser
 
 
 class UIFunction(Enum):

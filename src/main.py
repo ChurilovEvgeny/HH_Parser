@@ -1,4 +1,4 @@
-from src.hh import HH
+from src.parsers.hh import HH
 from src.user_interface import UserInterface
 from src.file_workers.JSON_worker import JSONWorker
 
